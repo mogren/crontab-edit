@@ -3,13 +3,31 @@
 <head>
     <meta charset="utf-8" content="text/html">
     <link rel="stylesheet" href="crontab.css" />
-    <script type="text/javascript" src="crontab-edit.js"></script>
+    <script type="text/javascript" src="../lib/underscore.js"></script>
+    <script type="text/javascript" src="../lib/backbone.js"></script>
+    <script type="text/javascript" src="../lib/backbone.localStorage.js"></script>    
+    <script type="text/javascript" src="../src/crontab-edit.js"></script>
     <title>Crontab Editor Demo</title>
 </head>
 <body>
     <div class="ct_title">Crontab Editor</div>
     <div id="crontab-editor">
-        <textarea id="ct-textarea" rows="15" cols="100" onchange=""></textarea>
+        <textarea id="ct-textarea" rows="15" cols="100" onchange="">
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=root
+HOME=/
+
+* * * * * root flock -xn /tmp/stuff.lock -c '/tmp/do_magic.sh' > /dev/null 2> /dev/null
+5 */4 * * * root /var/scripts/filebackup
+40 4 * * * root /var/scripts/dbbackup
+
+# run-parts
+01 * * * * root run-parts /etc/cron.hourly
+02 4 * * * root run-parts /etc/cron.daily
+22 4 * * 0 root run-parts /etc/cron.weekly
+42 4 1 * * root run-parts /etc/cron.monthly
+        </textarea>
         <div id="ct_editor">
             <div class="ct-title">Parsed crontab:</div>
             <div id="editor-output"></div>
